@@ -18,6 +18,7 @@ private:
     cv::Mat m_frame;
     QLabel m_label;
     QTimer m_timer;
+    cv::Ptr<cv::AKAZE> m_detector;
 
 private slots:
     void updateFrame();
