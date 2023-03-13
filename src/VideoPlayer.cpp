@@ -1,9 +1,10 @@
-#include "VideoStream.h"
+#include "VideoPlayer.h"
 #include <vector>
 
 using namespace cv;
+using namespace vv;
 
-VideoStream::VideoStream(QWidget *parent) : QWidget(parent)
+VideoPlayer::VideoPlayer(QWidget *parent) : QWidget(parent)
 {
     // Open camera
     m_cap.open(0);
@@ -18,16 +19,16 @@ VideoStream::VideoStream(QWidget *parent) : QWidget(parent)
     m_label.setFixedSize(640, 480);
 
     // Set up timer
-    connect(&m_timer, &QTimer::timeout, this, &VideoStream::updateFrame);
+    connect(&m_timer, &QTimer::timeout, this, &VideoPlayer::updateFrame);
     m_timer.start(20);
 }
 
-VideoStream::~VideoStream()
+VideoPlayer::~VideoPlayer()
 {
     m_cap.release();
 }
 
-void VideoStream::updateFrame()
+void VideoPlayer::updateFrame()
 {
     // Read frame from camera
     if (!m_cap.read(m_frame)) {
