@@ -2,7 +2,7 @@
 #define VIDEOPLAYER_H
 
 #include <QWidget>
-#include <QLabel>
+#include <QPixmap>
 #include <QTimer>
 #include <opencv2/opencv.hpp>
 
@@ -15,10 +15,13 @@ namespace vv {
 		explicit VideoPlayer(QWidget *parent = nullptr);
 		~VideoPlayer();
 
+	protected:
+	    void paintEvent(QPaintEvent *event) override;
+
 	private:
 		cv::VideoCapture m_cap;
 		cv::Mat m_frame;
-		QLabel m_label;
+		QPixmap m_pixmap;
 		QTimer m_timer;
 		cv::Ptr<cv::AKAZE> m_detector;
 

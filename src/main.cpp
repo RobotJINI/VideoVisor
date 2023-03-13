@@ -1,15 +1,15 @@
 #include <QApplication>
-#include "VideoPlayer.h"
+#include "VideoVisor.h"
 
 int main(int argc, char** argv) {
     // Create Qt application
     QApplication app(argc, argv);
 
     // Create VideoStream object
-    vv::VideoPlayer player;
+    vv::VideoVisor videoVisor;
 
     // Show the stream widget
-    player.show();
+    videoVisor.show();
 
     // Run the Qt event loop
     return app.exec();

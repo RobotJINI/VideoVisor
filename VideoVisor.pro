@@ -14,11 +14,13 @@ LIBS += `pkg-config --libs opencv4`
 
 SRC_DIR = ./src
 SOURCES += $$SRC_DIR/main.cpp \
-           $$SRC_DIR/VideoPlayer.cpp
+           $$SRC_DIR/VideoPlayer.cpp \
+           $$SRC_DIR/VideoVisor.cpp
            
 HEADERS_DIR = ./include
 INCLUDEPATH += $$HEADERS_DIR
-HEADERS += $$HEADERS_DIR/VideoPlayer.h
+HEADERS += $$HEADERS_DIR/VideoPlayer.h \
+		   $$HEADERS_DIR/VideoVisor.h
 
 TARGET_DIR = ../bin
 TARGET = videoVisor

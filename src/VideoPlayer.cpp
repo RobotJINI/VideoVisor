@@ -1,5 +1,6 @@
 #include "VideoPlayer.h"
 #include <vector>
+#include <QPainter>
 
 using namespace cv;
 using namespace vv;
@@ -11,12 +12,9 @@ VideoPlayer::VideoPlayer(QWidget *parent) : QWidget(parent)
 
     m_detector = AKAZE::create(AKAZE::DESCRIPTOR_MLDB);
 
-    // Set camera resolution
-    m_cap.set(CAP_PROP_FRAME_WIDTH, 640);
-    m_cap.set(CAP_PROP_FRAME_HEIGHT, 480);
-
-    // Set up label
-    m_label.setFixedSize(640, 480);
+    // Update camera resolution
+    m_cap.set(CAP_PROP_FRAME_WIDTH, width());
+    m_cap.set(CAP_PROP_FRAME_HEIGHT, height());
 
     // Set up timer
     connect(&m_timer, &QTimer::timeout, this, &VideoPlayer::updateFrame);
@@ -32,12 +30,16 @@ void VideoPlayer::updateFrame()
 {
     // Read frame from camera
     if (!m_cap.read(m_frame)) {
-        m_timer.stop();
+        //m_timer.stop();
         return;
     }
+    // Resize frame to fit widget size
+    Mat resizedFrame;
+    cv::resize(m_frame, resizedFrame, Size(width(), height()));
+
     // Convert to grayscale
     Mat gray;
-    cvtColor(m_frame, gray, COLOR_BGR2GRAY);
+    cvtColor(resizedFrame, gray, COLOR_BGR2GRAY);
 
     // Detect SURF features
     std::vector<KeyPoint> keypoints;
@@ -45,15 +47,20 @@ void VideoPlayer::updateFrame()
 
     // Draw keypoints on input image
     Mat imgKeypoints;
-    drawKeypoints(m_frame, keypoints, imgKeypoints);
+    drawKeypoints(resizedFrame, keypoints, imgKeypoints);
 
     // Convert frame to QImage
     QImage img(imgKeypoints.data, imgKeypoints.cols, imgKeypoints.rows, imgKeypoints.step, QImage::Format_RGB888);
     QImage rgbImg = img.rgbSwapped();
 
     // Set image to label
-    m_label.setPixmap(QPixmap::fromImage(rgbImg));
+    m_pixmap = QPixmap::fromImage(rgbImg);
+    update();
+}
 
-    // Show label
-    m_label.show();
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void VideoPlayer::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    painter.drawPixmap(0, 0, m_pixmap);
 }
