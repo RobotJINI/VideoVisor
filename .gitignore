@@ -31,5 +31,11 @@
 *.out
 *.app
 
+# Eclipse
 .project
+
+# qmake stuff
 .qmake.stash
+build/
+bin/
+Makefile
