@@ -9,6 +9,17 @@ To install and run the application, follow these steps:
 3. Build the project using a C++ compiler that supports C++17 or later.
 4. Run the executable file.
 
+## Build
+```bash
+qmake VideoVisor.pro
+make
+```
+
+## Run
+```bash
+./bin/videoVisor
+```
+
 ## Usage
 When you launch the application, you will see a window with live video from your camera. You can use the "Resolution" dropdown menu to select the desired resolution for the video feed. You can also use the "Filter" dropdown menu to select one of several image filters to apply to the video in real-time.
 
