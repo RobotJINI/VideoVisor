@@ -5,6 +5,7 @@
 #include <QPixmap>
 #include <QTimer>
 #include <opencv2/opencv.hpp>
+#include "filters/Filter.h"
 
 namespace vv {
 
@@ -23,7 +24,7 @@ namespace vv {
 		cv::Mat m_frame;
 		QPixmap m_pixmap;
 		QTimer m_timer;
-		cv::Ptr<cv::AKAZE> m_detector;
+		Filter *m_cur_filter;
 
 	private slots:
 		void updateFrame();
