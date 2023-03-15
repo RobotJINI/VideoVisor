@@ -13,15 +13,24 @@ VideoVisor::VideoVisor(QWidget *parent)
     : QMainWindow(parent)
 {
     // Create the video player
-    videoPlayer = new VideoPlayer();
+    m_videoPlayer = new VideoPlayer();
+    m_buttonSize = new QSize(150, 50);
+    m_labelSize = new QSize(100, 50);
+    createUI();
+}
 
+void VideoVisor::createUI()
+{
     // Create the layout for the toggle buttons
     QVBoxLayout *toggleButtonLayout = new QVBoxLayout();
     createToggleButtonLayout(toggleButtonLayout);
+    createFilterButtonLayout(toggleButtonLayout);
+    toggleButtonLayout->setSpacing(0);
+    toggleButtonLayout->setAlignment(Qt::AlignTop);
 
     // Create the layout for the video player and toggle buttons
     QHBoxLayout *videoLayout = new QHBoxLayout();
-    videoLayout->addWidget(videoPlayer);
+    videoLayout->addWidget(m_videoPlayer);
     videoLayout->addLayout(toggleButtonLayout);
 
     // Create the main widget
@@ -32,43 +41,73 @@ VideoVisor::VideoVisor(QWidget *parent)
     setCentralWidget(mainWidget);
 
     // Connect the signals and slots for the buttons
-    connect(resolutionCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &VideoVisor::updateResolution);
+    connect(m_resolutionCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &VideoVisor::updateResolution);
 
     // Set the window title and size
     setWindowTitle("Video Visor");
-    this->setFixedSize(640 + 150, 480);
+    updateResolution(0);
 }
 
-void VideoVisor::createToggleButtonLayout(QVBoxLayout *toggleButtonLayout) {
-    // set the size of each toggle button
-    QSize buttonSize(150, 50);
+void VideoVisor::createToggleButtonLayout(QVBoxLayout *toggleButtonLayout)
+{
+	QHBoxLayout *internal_layout = new QHBoxLayout();
+	QLabel *label = new QLabel("Resolution:");
+	label->setFixedSize(*m_labelSize);
+	internal_layout->addWidget(label);
 
-    // Create resolution comboBox
-    resolutionCombo = new QComboBox(this);
-    resolutionCombo->setFixedSize(buttonSize);
-    resolutionCombo->addItem("640x480");
-    resolutionCombo->addItem("800x600");
-    resolutionCombo->addItem("1024x768");
+    m_resolutionCombo = new QComboBox(this);
+    m_resolutionCombo->setFixedSize(*m_buttonSize);
+    m_resolutionCombo->addItem("640x480");
+    m_resolutionCombo->addItem("800x600");
+    m_resolutionCombo->addItem("1024x768");
 
-    // Add the buttons to the layout
-    toggleButtonLayout->addWidget(resolutionCombo);
-    toggleButtonLayout->setSpacing(0);
+    internal_layout->addWidget(m_resolutionCombo);
+    internal_layout->setSpacing(0);
+
+    toggleButtonLayout->addLayout(internal_layout);
+}
+
+void VideoVisor::createFilterButtonLayout(QVBoxLayout *toggleButtonLayout)
+{
+	QHBoxLayout *internal_layout = new QHBoxLayout();
+	QLabel *label = new QLabel("Filter:");
+	label->setFixedSize(*m_labelSize);
+	internal_layout->addWidget(label);
+
+	m_filterCombo = new QComboBox(this);
+	m_filterCombo->setFixedSize(*m_buttonSize);
+	m_filterCombo->addItem("None");
+	m_filterCombo->addItem("Gaussian Blur");
+	m_filterCombo->addItem("Median");
+	m_filterCombo->addItem("Sobel");
+	m_filterCombo->addItem("Laplacian");
+    m_filterCombo->addItem("Canny Edge");
+
+    internal_layout->addWidget(m_filterCombo);
+    internal_layout->setSpacing(0);
+
+    toggleButtonLayout->addLayout(internal_layout);
 }
 
 void VideoVisor::updateResolution(int index)
 {
     switch (index) {
     case 0:
-        videoPlayer->resize(640, 480);
-        this->setFixedSize(640 + 150, 480);
+    	m_videoPlayer->resize(640, 480);
+        this->setFixedSize(getWindowWidth(640), 480);
         break;
     case 1:
-        videoPlayer->resize(800, 600 );
-        this->setFixedSize(800 + 150, 600);
+    	m_videoPlayer->resize(800, 600 );
+        this->setFixedSize(getWindowWidth(800), 600);
         break;
     case 2:
-        videoPlayer->resize(1024, 768);
-        this->setFixedSize(1024 + 150, 768);
+    	m_videoPlayer->resize(1024, 768);
+        this->setFixedSize(getWindowWidth(1024), 768);
         break;
     }
+}
+
+int VideoVisor::getWindowWidth(int video_width)
+{
+	return video_width + m_buttonSize->width() + m_labelSize->width();
 }

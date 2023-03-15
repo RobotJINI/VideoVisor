@@ -19,10 +19,16 @@ namespace vv {
 		void updateResolution(int index);
 
 	private:
-		VideoPlayer *videoPlayer;
-		QComboBox *resolutionCombo;
+		VideoPlayer *m_videoPlayer;
+		QComboBox *m_resolutionCombo;
+		QComboBox *m_filterCombo;
+		QSize *m_buttonSize;
+		QSize *m_labelSize;
 
+		void createUI();
 		void createToggleButtonLayout(QVBoxLayout *toggleButtonLayout);
+		void createFilterButtonLayout(QVBoxLayout *toggleButtonLayout);
+		int getWindowWidth(int video_width);
 	};
 }
 
