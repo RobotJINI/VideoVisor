@@ -42,6 +42,7 @@ void VideoVisor::createUI()
 
     // Connect the signals and slots for the buttons
     connect(m_resolutionCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &VideoVisor::updateResolution);
+    connect(m_filterCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &VideoVisor::onFilterChanged);
 
     // Set the window title and size
     setWindowTitle("Video Visor");
@@ -77,16 +78,23 @@ void VideoVisor::createFilterButtonLayout(QVBoxLayout *toggleButtonLayout)
 	m_filterCombo = new QComboBox(this);
 	m_filterCombo->setFixedSize(*m_buttonSize);
 	m_filterCombo->addItem("None");
-	m_filterCombo->addItem("Gaussian Blur");
+	m_filterCombo->addItem("Gaussian");
 	m_filterCombo->addItem("Median");
 	m_filterCombo->addItem("Sobel");
 	m_filterCombo->addItem("Laplacian");
-    m_filterCombo->addItem("Canny Edge");
+    m_filterCombo->addItem("Canny");
+    m_filterCombo->addItem("Surf");
 
     internal_layout->addWidget(m_filterCombo);
     internal_layout->setSpacing(0);
 
     toggleButtonLayout->addLayout(internal_layout);
+}
+
+void VideoVisor::onFilterChanged(int index)
+{
+    QString filterName = m_filterCombo->itemText(index);
+    m_videoPlayer->switchFilter(filterName.toStdString());
 }
 
 void VideoVisor::updateResolution(int index)

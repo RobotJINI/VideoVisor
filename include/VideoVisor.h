@@ -17,6 +17,7 @@ namespace vv {
 
 	private slots:
 		void updateResolution(int index);
+		void onFilterChanged(int index);
 
 	private:
 		VideoPlayer *m_videoPlayer;

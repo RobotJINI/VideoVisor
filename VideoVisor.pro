@@ -1,6 +1,6 @@
 QT += widgets core gui
 
-CONFIG += c++11
+CONFIG += c++14
 CONFIG -= app_bundle
 CONFIG += -Bbuild
 CONFIG += -o build

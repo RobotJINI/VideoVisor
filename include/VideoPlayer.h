@@ -16,6 +16,8 @@ namespace vv {
 		explicit VideoPlayer(QWidget *parent = nullptr);
 		~VideoPlayer();
 
+		void switchFilter(const std::string& filterName);
+
 	protected:
 	    void paintEvent(QPaintEvent *event) override;
 
@@ -24,7 +26,7 @@ namespace vv {
 		cv::Mat m_frame;
 		QPixmap m_pixmap;
 		QTimer m_timer;
-		Filter *m_cur_filter;
+		std::unique_ptr<Filter> m_cur_filter;
 
 	private slots:
 		void updateFrame();

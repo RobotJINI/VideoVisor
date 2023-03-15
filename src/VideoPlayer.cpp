@@ -19,13 +19,7 @@ VideoPlayer::VideoPlayer(QWidget *parent) : QWidget(parent)
     m_cap.set(CAP_PROP_FRAME_WIDTH, width());
     m_cap.set(CAP_PROP_FRAME_HEIGHT, height());
 
-    //m_cur_filter = new CannyFilter(100, 200);
-    //m_cur_filter = new SurfFilter();
-    //m_cur_filter = new LaplacianFilter();
-    //m_cur_filter = new SobelFilter();
-    //m_cur_filter = new MedianFilter();
-    //m_cur_filter = new GaussianFilter();
-    m_cur_filter = new NullFilter();
+    m_cur_filter = std::make_unique<NullFilter>();
 
     // Set up timer
     connect(&m_timer, &QTimer::timeout, this, &VideoPlayer::updateFrame);
@@ -35,6 +29,24 @@ VideoPlayer::VideoPlayer(QWidget *parent) : QWidget(parent)
 VideoPlayer::~VideoPlayer()
 {
     m_cap.release();
+}
+
+void VideoPlayer::switchFilter(const std::string& filterName) {
+    if (filterName == "None") {
+        m_cur_filter = std::make_unique<NullFilter>();
+    } else if (filterName == "Canny") {
+        m_cur_filter = std::make_unique<CannyFilter>(100, 200);
+    } else if (filterName == "Surf") {
+        m_cur_filter = std::make_unique<SurfFilter>();
+    } else if (filterName == "Laplacian") {
+        m_cur_filter = std::make_unique<LaplacianFilter>();
+    } else if (filterName == "Sobel") {
+        m_cur_filter = std::make_unique<SobelFilter>();
+    } else if (filterName == "Median") {
+        m_cur_filter = std::make_unique<MedianFilter>();
+    } else if (filterName == "Gaussian") {
+        m_cur_filter = std::make_unique<GaussianFilter>();
+    }
 }
 
 void VideoPlayer::updateFrame()
