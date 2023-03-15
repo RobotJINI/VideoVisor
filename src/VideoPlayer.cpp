@@ -1,6 +1,7 @@
 #include "VideoPlayer.h"
 #include <vector>
 #include <QPainter>
+#include <QDebug>
 #include "filters/CannyFilter.h"
 #include "filters/SurfFilter.h"
 #include "filters/LaplacianFilter.h"
@@ -14,7 +15,9 @@ using namespace vv;
 VideoPlayer::VideoPlayer(QWidget *parent) : QWidget(parent)
 {
     // Open camera
-    m_cap.open(0);
+    if (!m_cap.open(0)) {
+        qWarning() << "Failed to open camera";
+    }
     // Update camera resolution
     m_cap.set(CAP_PROP_FRAME_WIDTH, width());
     m_cap.set(CAP_PROP_FRAME_HEIGHT, height());
@@ -32,9 +35,7 @@ VideoPlayer::~VideoPlayer()
 }
 
 void VideoPlayer::switchFilter(const std::string& filterName) {
-    if (filterName == "None") {
-        m_cur_filter = std::make_unique<NullFilter>();
-    } else if (filterName == "Canny") {
+    if (filterName == "Canny") {
         m_cur_filter = std::make_unique<CannyFilter>(100, 200);
     } else if (filterName == "Surf") {
         m_cur_filter = std::make_unique<SurfFilter>();
@@ -46,6 +47,8 @@ void VideoPlayer::switchFilter(const std::string& filterName) {
         m_cur_filter = std::make_unique<MedianFilter>();
     } else if (filterName == "Gaussian") {
         m_cur_filter = std::make_unique<GaussianFilter>();
+    } else {
+    	m_cur_filter = std::make_unique<NullFilter>();
     }
 }
 

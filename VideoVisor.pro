@@ -1,6 +1,6 @@
 QT += widgets core gui
 
-CONFIG += c++14
+CONFIG += c++17
 CONFIG -= app_bundle
 CONFIG += -Bbuild
 CONFIG += -o build
@@ -33,7 +33,7 @@ HEADERS += $$HEADERS_DIR/VideoPlayer.h \
 		   $$HEADERS_DIR/filters/LaplacianFilter.h \
 		   $$HEADERS_DIR/filters/SobelFilter.h  \
 		   $$HEADERS_DIR/filters/MedianFilter.h \
-		   $$HEADERS_DIR/filters/GaussianFilter.cpp
+		   $$HEADERS_DIR/filters/GaussianFilter.h
 
 TARGET_DIR = ../bin
 TARGET = videoVisor

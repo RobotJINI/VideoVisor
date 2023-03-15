@@ -12,10 +12,12 @@ using namespace vv;
 VideoVisor::VideoVisor(QWidget *parent)
     : QMainWindow(parent)
 {
-    // Create the video player
-    m_videoPlayer = new VideoPlayer();
+    // Initialize button and label sizes
     m_buttonSize = new QSize(150, 50);
     m_labelSize = new QSize(100, 50);
+
+    // Create the video player
+    m_videoPlayer = new VideoPlayer();
     createUI();
 }
 
@@ -111,6 +113,10 @@ void VideoVisor::updateResolution(int index)
     case 2:
     	m_videoPlayer->resize(1024, 768);
         this->setFixedSize(getWindowWidth(1024), 768);
+        break;
+    default:
+        m_videoPlayer->resize(640, 480);
+        this->setFixedSize(getWindowWidth(640), 480);
         break;
     }
 }
