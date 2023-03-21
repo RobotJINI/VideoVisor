@@ -19,9 +19,14 @@ make
 ```bash
 ./bin/videoVisor
 ```
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/571631/226735600-8aff2bce-a2d6-459d-9e3c-79d0b43013ad.png">
+</p>
 
 ## Usage
 When you launch the application, you will see a window with live video from your camera. You can use the "Resolution" dropdown menu to select the desired resolution for the video feed. You can also use the "Filter" dropdown menu to select one of several image filters to apply to the video in real-time.
+
+
 
 ## Contributing
 If you want to contribute to this project, feel free to create a pull request or open an issue. We welcome contributions and feedback from the community.
